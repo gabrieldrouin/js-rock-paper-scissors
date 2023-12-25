@@ -92,7 +92,7 @@ function main() {
         if (result === 2) {
             playerWins++;
         };
-        console.log('Score : ' + playerWins + ' points for player and ' + computerWins + ' points for computer.')
+        console.log('Score : ' + playerWins + ' point(s) for player and ' + computerWins + ' point(s) for CPU.')
 
         if (playerWins == pointsToWin) {
             console.log('Player has won!');
