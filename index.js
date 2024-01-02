@@ -62,46 +62,41 @@ function game() {
     return playRound(playerSelection, computerSelection);
 }
 
-function main() {
+let pointsToWin;
 
-    let pointsToWin;
-
-    do {
-        pointsToWin = prompt("Choose how many points to win : ");
-        if (!((pointsToWin) >= 0)) {
-            pointsToWin = prompt("Please try again : ")
-        }
-    } while (!((pointsToWin) >= 0));
-    
+do {
+    pointsToWin = prompt("Choose how many points to win : ");
     if (!((pointsToWin) >= 0)) {
-        console.error('Game aborted')
+        pointsToWin = prompt("Please try again : ")
+    }
+} while (!((pointsToWin) >= 0));
+
+if (!((pointsToWin) >= 0)) {
+    console.error('Game aborted')
+};
+let playerWins = 0;
+let computerWins = 0;
+let round = 0;
+let result;
+
+while (playerWins < pointsToWin && computerWins < pointsToWin) {
+    console.log('Round ' + ++round)
+
+    result = game()
+
+    if (result === 1) {
+        computerWins++;
     };
-    let playerWins = 0;
-    let computerWins = 0;
-    let round = 0;
-    let result;
-
-    while (playerWins < pointsToWin && computerWins < pointsToWin) {
-        console.log('Round ' + ++round)
-
-        result = game()
-
-        if (result === 1) {
-            computerWins++;
-        };
-        if (result === 2) {
-            playerWins++;
-        };
-        console.log('Score : ' + playerWins + ' point(s) for player and ' + computerWins + ' point(s) for CPU.')
-
-        if (playerWins == pointsToWin) {
-            console.log('Player has won!');
-        };
-
-        if (computerWins == pointsToWin) {
-            console.log('CPU has won!');
-        };
+    if (result === 2) {
+        playerWins++;
     };
-}
+    console.log('Score : ' + playerWins + ' point(s) for player and ' + computerWins + ' point(s) for CPU.')
 
-main();
+    if (playerWins == pointsToWin) {
+        console.log('Player has won!');
+    };
+
+    if (computerWins == pointsToWin) {
+        console.log('CPU has won!');
+    };
+};
