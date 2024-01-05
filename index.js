@@ -1,4 +1,4 @@
-console.log("js-rock-paper-scissors V1.0.0\n\nCopyright © Gabriel Drouin 2023\n")
+console.log("js-rock-paper-scissors V1.0.0\n\nCopyright © Gabriel Drouin 2023-2024\n")
 
 const results = {
     'rock': { 'rock': null, 'paper': 1, 'scissor': 2 },
