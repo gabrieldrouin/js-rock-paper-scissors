@@ -1,26 +1,25 @@
 console.log("js-rock-paper-scissors V1.0.0\n\nCopyright © Gabriel Drouin 2023\n")
 
-function getComputerChoice() {
-    return Math.floor(Math.random() * 3);
-};
-
-function playRound(p, c) {
-    if (p === c) {
-        console.log('No points! Player\'s move was ' + p + ' and CPU\'s move was ' + c)
-        return 0;
-    }
-
-    if ((p === 'rock' && c === 'paper') || (p === 'paper' && c === 'scissors') || (p === 'scissors' && c === 'rock')) {
-        console.log('Point for CPU! Player\'s move was ' + p + ' and CPU\'s move was ' + c)
-        return 1;
-    } 
-
-    if ((c === 'rock' && p === 'paper') || (c === 'paper' && p === 'scissors') || (c === 'scissors' && p === 'rock')) {
-        console.log('Point for player! Player\'s move was ' + p + ' and CPU\'s move was ' + c)
-        return 2;
-    } 
-
-};
+const results = {
+    'rock': { 'rock': null, 'paper': 1, 'scissor': 2 },
+    'scissor': { 'rock': 1, 'paper': 2, 'scissor': null },
+    'paper': { 'rock': 2, 'paper': null, 'scissor': 1 } 
+  };
+  
+  const choices = Object.keys(results);
+  
+  function getComputerChoice() {
+    return choices[Math.floor(Math.random() * choices.length)];
+  }
+  
+  function playRound(players_move, computers_move) {
+    const result = results[players_move][computers_move];
+    if (result === null)   console.log('No points! Player\'s move was ' + players_move + ' and CPU\'s move was ' + computers_move);
+    else if (result === 1) console.log('Point for CPU! Player\'s move was ' + players_move + ' and CPU\'s move was ' + computers_move);
+    else if (result === 2) console.log('Point for player! Player\'s move was ' + players_move + ' and CPU\'s move was ' + computers_move);
+    
+    return result;
+  }
 
 function game() {
 
