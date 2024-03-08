@@ -1,68 +1,70 @@
 console.log("js-rock-paper-scissors V1.1.0\n\nCopyright © Gabriel Drouin 2023-2024\n")
 
+
 const results = {
-    'rock': { 'rock': null, 'paper': 'cpu', 'scissor': 'player' },
-    'scissor': { 'rock': 'cpu', 'paper': 'player', 'scissor': null },
-    'paper': { 'rock': 'player', 'paper': null, 'scissor': 'cpu' } 
-  };
-  
-  const choices = Object.keys(results);
-  
-  function getComputerChoice() {
+    'rock': { 'rock': null, 'paper': 'cpu', 'scissors': 'player' },
+    'scissors': { 'rock': 'cpu', 'paper': 'player', 'scissors': null },
+    'paper': { 'rock': 'player', 'paper': null, 'scissors': 'cpu' }
+};
+
+const choices = Object.keys(results);
+
+function getComputerChoice() {
     return choices[Math.floor(Math.random() * choices.length)];
-  }
-  
-  function playRound(players_move, computers_move) {
-    const result = results[players_move][computers_move];
-    if (result === null)   console.log('No points! Player\'s move was ' + players_move + ' and CPU\'s move was ' + computers_move);
-    else if (result === 'cpu') console.log('Point for CPU! Player\'s move was ' + players_move + ' and CPU\'s move was ' + computers_move);
-    else if (result === 'player') console.log('Point for player! Player\'s move was ' + players_move + ' and CPU\'s move was ' + computers_move);
-    
-    return result;
 }
 
-function game() {
+function updateScores() {
+    playerScore.textContent = 'Player score : ' + playerWins;
+    computerScore.textContent = 'Computer score : ' + computerWins;
+}
 
-    // Getting the player's choice
+function playRound(players_move, computers_move) {
+    const result = results[players_move][computers_move];
+    if (result === null) console.log('No points! Player\'s move was ' + players_move + ' and CPU\'s move was ' + computers_move);
+    else if (result === 'cpu') {
+        console.log('Point for CPU! Player\'s move was ' + players_move + ' and CPU\'s move was ' + computers_move);
+        ++computerWins;
+        updateScores();
+    }
+    else if (result === 'player') {
+        console.log('Point for player! Player\'s move was ' + players_move + ' and CPU\'s move was ' + computers_move);
+        ++playerWins;
+        updateScores();
+    }
+    return;
+}
 
-    let playerSelection = null;
-
-    do {
-        if (playerSelection !== null) {
-            playerSelection = prompt("Please try again : ")
-        }
-        else {
-            playerSelection = prompt("Choose between rock, paper or scissors : ");
-        }
-        if (playerSelection === null) {
-            console.error('Game aborted');
-        }
-        playerSelection = playerSelection.toLowerCase()
-    } while (playerSelection !== 'rock' && playerSelection !== 'paper' && playerSelection !== 'scissors');
-
-    // Getting the computer's choice
-
-    let computerSelection = getComputerChoice();
-
-    switch(computerSelection) {
-        case 0:
-            computerSelection = 'rock';
-            break;
-        case 1:
-            computerSelection = 'paper';
-            break;
-        case 2:
-            computerSelection = 'scissors';
-            break;
+function checkWin() {
+    if (playerWins == pointsToWin) {
+        console.log('Player has won!');
     };
 
-    // Playing a round
-
-    return playRound(playerSelection, computerSelection);
+    if (computerWins == pointsToWin) {
+        console.log('CPU has won!');
+    };
 }
 
+var playerWins = 0;
+var computerWins = 0;
+
+let round = 0;
+let result;
+
+// Delay the prompt by 50 milliseconds to allow time for DOM rendering
+setTimeout(() => {
+    let pointsToWin;
+    do {
+        pointsToWin = prompt("Choose how many points to win : ");
+        if (!((pointsToWin) >= 0)) {
+            pointsToWin = prompt("Please try again : ")
+        }
+    } while (!((pointsToWin) >= 0));
+}, 50);
 
 
+
+
+//DOM Rendering
 const body = document.querySelector('body');
 
 let testScore = 3;
@@ -82,12 +84,12 @@ const numbersScoreDiv = document.createElement('div');
 scoreDiv.appendChild(numbersScoreDiv);
 
 const playerScore = document.createElement('p');
-playerScore.textContent = 'Player score : ' + testScore;
+playerScore.textContent = `Player score : ${playerWins}`;
 numbersScoreDiv.appendChild(playerScore);
 
 
 const computerScore = document.createElement('p');
-computerScore.textContent = 'Computer score : ' + testScore;
+computerScore.textContent = `Computer score : ${computerWins}`;
 numbersScoreDiv.appendChild(computerScore);
 
 
@@ -120,31 +122,3 @@ buttonsDiv.appendChild(btnScissors);
 btnScissors.addEventListener('click', function() {
     playRound(btnScissors.textContent.toLowerCase(), getComputerChoice());
 });
-
-
-function checkWin () {
-    if (playerWins == pointsToWin) {
-        console.log('Player has won!');
-    };
-
-    if (computerWins == pointsToWin) {
-        console.log('CPU has won!');
-    };
-}
-
-// Delay the prompt by 50 milliseconds to allow time for DOM rendering
-setTimeout(() => {
-    let pointsToWin;
-    do {
-        pointsToWin = prompt("Choose how many points to win : ");
-        if (!((pointsToWin) >= 0)) {
-            pointsToWin = prompt("Please try again : ")
-        }
-    } while (!((pointsToWin) >= 0));
-
-    let playerWins = 0;
-    let computerWins = 0;
-    let round = 0;
-    let result;
-
-}, 50);
