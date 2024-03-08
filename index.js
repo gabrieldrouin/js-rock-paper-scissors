@@ -13,21 +13,55 @@ function getComputerChoice() {
     return choices[Math.floor(Math.random() * choices.length)];
 }
 
+function createRefreshButton() {
+    btnRock.disabled = true;
+    btnPaper.disabled = true;
+    btnScissors.disabled = true;
+
+    const btnRefresh = document.createElement('button');
+    btnRefresh.textContent = 'New game';
+    endOfGameDiv.appendChild(btnRefresh);
+    btnRefresh.addEventListener('click', function() {
+        location.reload();
+    });
+}
+
 function updateScores() {
-    playerScore.textContent = 'Player score : ' + playerWins;
-    computerScore.textContent = 'Computer score : ' + computerWins;
+    playerScore.textContent = `Player score : ${playerWins}`;
+    computerScore.textContent = `Computer score : ${computerWins}`;
+
+    if (playerWins === pointsToWin) {
+        endOfGameText.textContent = 'You won!';
+        createRefreshButton();
+    }
+
+    if (computerWins === pointsToWin) {
+        endOfGameText.textContent = 'CPU won!';
+        createRefreshButton();
+    }
 }
 
 function playRound(players_move, computers_move) {
+    if (playerWins === pointsToWin || computerWins === pointsToWin) {
+        return;
+    }
     const result = results[players_move][computers_move];
-    if (result === null) console.log('No points! Player\'s move was ' + players_move + ' and CPU\'s move was ' + computers_move);
-    else if (result === 'cpu') {
-        console.log('Point for CPU! Player\'s move was ' + players_move + ' and CPU\'s move was ' + computers_move);
+    if (result === null) {
+        resultsText.innerHTML = `No points!<br><br>
+        Your move was ${players_move}<br>
+        CPU\'s move was ${computers_move}`;
+    }
+    if (result === 'cpu') {
         ++computerWins;
+        resultsText.innerHTML = `Point for CPU!<br><br>
+        Your move was ${players_move}<br>
+        CPU\'s move was ${computers_move}`;
         updateScores();
     }
-    else if (result === 'player') {
-        console.log('Point for player! Player\'s move was ' + players_move + ' and CPU\'s move was ' + computers_move);
+    if (result === 'player') {
+        resultsText.innerHTML = `Point for you!<br><br>
+        Your move was ${players_move}<br>
+        CPU\'s move was ${computers_move}`;
         ++playerWins;
         updateScores();
     }
@@ -37,37 +71,21 @@ function playRound(players_move, computers_move) {
 function checkWin() {
     if (playerWins == pointsToWin) {
         console.log('Player has won!');
-    };
-
+    }
     if (computerWins == pointsToWin) {
         console.log('CPU has won!');
-    };
+    }
 }
 
+var pointsToWin;
 var playerWins = 0;
 var computerWins = 0;
 
 let round = 0;
 let result;
 
-// Delay the prompt by 50 milliseconds to allow time for DOM rendering
-setTimeout(() => {
-    let pointsToWin;
-    do {
-        pointsToWin = prompt("Choose how many points to win : ");
-        if (!((pointsToWin) >= 0)) {
-            pointsToWin = prompt("Please try again : ")
-        }
-    } while (!((pointsToWin) >= 0));
-}, 50);
-
-
-
-
 //DOM Rendering
 const body = document.querySelector('body');
-
-let testScore = 3;
 
 //Score div
 const scoreDiv = document.createElement('div');
@@ -80,6 +98,23 @@ const h1ScoreDiv = document.createElement('h1');
 h1ScoreDiv.textContent = 'Score:';
 scoreDiv.appendChild(h1ScoreDiv);
 
+//Buttons div
+const buttonsDiv = document.createElement('div');
+buttonsDiv.style.padding = '10px 30px';
+buttonsDiv.style.display = 'flex';
+buttonsDiv.style.gap = '5px';
+body.appendChild(buttonsDiv);
+
+//Results div
+const resultsDiv = document.createElement('div');
+resultsDiv.style.paddingLeft = '10px';
+body.appendChild(resultsDiv);
+
+//End of game div
+const endOfGameDiv = document.createElement('div');
+endOfGameDiv.style.paddingLeft = '10px';
+body.appendChild(endOfGameDiv);
+
 const numbersScoreDiv = document.createElement('div');
 scoreDiv.appendChild(numbersScoreDiv);
 
@@ -87,20 +122,9 @@ const playerScore = document.createElement('p');
 playerScore.textContent = `Player score : ${playerWins}`;
 numbersScoreDiv.appendChild(playerScore);
 
-
 const computerScore = document.createElement('p');
 computerScore.textContent = `Computer score : ${computerWins}`;
 numbersScoreDiv.appendChild(computerScore);
-
-
-//Buttons div
-const buttonsDiv = document.createElement('div');
-buttonsDiv.style.padding = '30px';
-buttonsDiv.style.paddingTop = '10px';
-buttonsDiv.style.display = 'flex';
-buttonsDiv.style.gap = '5px';
-body.appendChild(buttonsDiv);
-
 
 const btnRock = document.createElement('button');
 btnRock.textContent = 'Rock';
@@ -122,3 +146,20 @@ buttonsDiv.appendChild(btnScissors);
 btnScissors.addEventListener('click', function() {
     playRound(btnScissors.textContent.toLowerCase(), getComputerChoice());
 });
+
+const resultsText = document.createElement('p');
+resultsDiv.appendChild(resultsText);
+
+const endOfGameText = document.createElement('p');
+endOfGameText.style.fontSize = "140%";
+endOfGameDiv.appendChild(endOfGameText);
+
+setTimeout(() => {
+    do {
+        pointsToWin = Number(prompt("Choose how many points to win : "));
+        if (!((pointsToWin) >= 0)) {
+            pointsToWin = prompt("Please try again : ")
+        }
+    } while (!((pointsToWin) >= 0));
+}, 20);
+
