@@ -5,6 +5,6 @@ Implemented using only DOM .appendChild methods (no content within the HTML's bo
 
 ## How to play
 
-Insert an appropriate value when prompted. Access the browser's console to display results.
+Press any of the three available selections until the game ends.
 
 ## _[View the site](https://gabrieldrouin.github.io/js-rock-paper-scissors/)_
